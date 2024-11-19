@@ -1,0 +1,43 @@
+{
+  "settings": {
+    "index": {
+      "analysis": {
+        "analyzer": {
+          "custom_index": {
+            "type": "custom",
+            "tokenizer": "standard",
+            "filter": ["lowercase", "asciifolding"]
+          },
+          "custom_search": {
+            "type": "custom",
+            "tokenizer": "standard",
+            "filter": ["lowercase", "asciifolding"]
+          }
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "id": {
+        "type": "integer"
+      },
+      "name": {
+        "type": "text",
+        "analyzer": "custom_index",
+        "search_analyzer": "custom_search"
+      },
+      "price": {
+        "type": "double"
+      },
+      "brand": {
+        "type": "text",
+        "analyzer": "custom_index",
+        "search_analyzer": "custom_search"
+      },
+      "category": {
+        "type": "keyword"
+      }
+    }
+  }
+}
