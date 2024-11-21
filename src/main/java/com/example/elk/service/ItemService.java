@@ -1,6 +1,7 @@
 package com.example.elk.service;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import com.example.elk.dto.SearchRequestDto;
 import com.example.elk.model.Item;
@@ -142,5 +143,27 @@ public class ItemService {
                 .stream()
                 .map(Hit::source)
                 .collect(Collectors.toList());
+    }
+
+    public List<Item> searchAllItemsByKeyword(String keyword) {
+        try {
+            Query query = ElkUtil.createMatchAllQueryByKeyword(keyword);
+
+            SearchRequest searchRequest = SearchRequest.of(s -> s
+                    .index("items_index")
+                    .query(query)
+            );
+
+            SearchResponse<Item> searchResponse = elasticsearchClient.search(searchRequest, Item.class);
+
+            return searchResponse
+                    .hits()
+                    .hits()
+                    .stream()
+                    .map(Hit::source)
+                    .collect(Collectors.toList());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -3,15 +3,22 @@
     "index": {
       "analysis": {
         "analyzer": {
-          "custom_index": {
+          "custom_index": {   //Bu analyzer, metni "standard" tokenizer ile parçalara ayırır ve ardından lowercase ve asciifolding filtreleri ile işler.
             "type": "custom",
             "tokenizer": "standard",
-            "filter": ["lowercase", "asciifolding"]
+            "filter": ["lowercase", "ngram_filter"]
           },
-          "custom_search": {
+          "custom_search": { //Bu analyzer, üsttekine ek olarak "ngram_filter" da ekler.
             "type": "custom",
             "tokenizer": "standard",
-            "filter": ["lowercase", "asciifolding"]
+            "filter": ["lowercase"]
+          }
+        },
+        "filter": {
+          "ngram_filter": {
+            "type": "ngram",
+            "min_gram": 1,
+            "max_gram": 20
           }
         }
       }
@@ -36,7 +43,9 @@
         "search_analyzer": "custom_search"
       },
       "category": {
-        "type": "keyword"
+        "type": "keyword",
+        "analyzer": "custom_index",
+        "search_analyzer": "custom_search"
       }
     }
   }

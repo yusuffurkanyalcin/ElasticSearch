@@ -66,4 +66,10 @@ public class ItemController {
     public List<String> autoSuggestItemsByNameWithQuery(@PathVariable String name) {
         return itemService.autoSuggestItemsByNameWithQuery(name);
     }
+
+    // verilen keyword'ü, mevcut index'teki bütün itemlarda ve bütün field'larında arayacak
+    @GetMapping("/{keyword}")
+    public List<Item> searchAllItemsByKeyword(@PathVariable String keyword) {
+        return itemService.searchAllItemsByKeyword(keyword);
+    }
 }
